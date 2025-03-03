@@ -8,7 +8,6 @@ func _init(shards: int = 8) -> void:
 
 func compare(original: Image, new_shot: Image, shot_name: String) -> float:
 	if not _can_run(original, new_shot):
-		push_error("Error: images are not the same size. Was the game resolution changed? If so, try recreating the base images.")
 		return 0.0
 	return await _multithread_compare(original, new_shot, shot_name, shard_amount)
 

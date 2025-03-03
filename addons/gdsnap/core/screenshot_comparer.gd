@@ -6,7 +6,6 @@ var WHITE_PIXEL = PackedByteArray([255, 255, 255, 255])
 
 func compare(original: Image, new_shot: Image, shot_name: String) -> float:
 	if not _can_run(original, new_shot):
-		push_error("Error: images are not the same size. Was the game resolution changed? If so, try recreating the base images.")
 		return 0.0
 
 	var original_data := original.get_data()
@@ -18,7 +17,13 @@ func compare(original: Image, new_shot: Image, shot_name: String) -> float:
 	return diff_result.different_pixels / float(total_pixels)
 
 func _can_run(original: Image, new_shot: Image) -> bool:
-	return original.get_width() != new_shot.get_width() or original.get_height() != new_shot.get_height()
+	if original == null:
+		push_error("Error: the base screenshot seems to be missing. Try recreating the base images.")
+		return false
+	if original.get_width() != new_shot.get_width() or original.get_height() != new_shot.get_height():
+		push_error("Error: images are not the same size. Was the game resolution changed? If so, try recreating the base images.")
+		return false
+	return true
 
 func _compare_img(original: PackedByteArray, new_shot: PackedByteArray) -> DiffResult:
 	var diff_result := DiffResult.new(0 , [])

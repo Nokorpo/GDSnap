@@ -16,7 +16,7 @@ config/icon="res://icon.svg"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/screenshot-testing-tool/plugin.cfg")
+enabled=PackedStringArray("res://addons/gdsnap/plugin.cfg")
 
 [rendering]
 

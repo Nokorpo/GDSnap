@@ -41,4 +41,9 @@ func update_base_screenshot(shot_name: String, screenshot: Image) -> void:
 	screenshot.save_png(path)
 
 func load_base_screenshot(shot_name: String) -> Image:
-	return Image.load_from_file(ScreenshotConfig.BASE_SCREENSHOTS_FOLDER + shot_name + ".png")
+	var image := Image.load_from_file(ScreenshotConfig.BASE_SCREENSHOTS_FOLDER + shot_name + ".png")
+	if image == null:
+		push_error("Error: the base screenshot '%s' seems to be missing. Try recreating the base images." % shot_name)
+		printerr("Error: the base screenshot '%s' seems to be missing. Try recreating the base images." % shot_name)
+		_exit_gracefully()
+	return image

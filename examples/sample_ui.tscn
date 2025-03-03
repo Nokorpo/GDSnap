@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cgpo81f7y7egh"]
 
-[ext_resource type="Script" path="res://addons/screenshot-testing-tool/core/base_screenshot_test.gd" id="1_qu5dq"]
+[ext_resource type="Script" path="res://examples/sample_screenshot_test.gd" id="1_w0tv4"]
 
 [sub_resource type="Theme" id="Theme_aefel"]
 Label/font_sizes/font_size = 32
@@ -16,7 +16,7 @@ theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
-script = ExtResource("1_qu5dq")
+script = ExtResource("1_w0tv4")
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -45,5 +45,6 @@ layout_mode = 2
 text = "• Item 4"
 
 [node name="Label5" type="Label" parent="VBoxContainer2/VBoxContainer"]
+visible = false
 layout_mode = 2
 text = "• Item 5"
