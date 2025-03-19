@@ -1,11 +1,17 @@
 [gd_scene load_steps=3 format=3 uid="uid://cgpo81f7y7egh"]
 
-[ext_resource type="Script" uid="uid://cay8cnkmxn6l3" path="res://examples/sample_screenshot_test.gd" id="1_w0tv4"]
+[ext_resource type="Script" uid="uid://ku2fmx26hm16" path="res://addons/gdsnap/core/base_screenshot_test.gd" id="1_u447u"]
 
 [sub_resource type="Theme" id="Theme_aefel"]
 Label/font_sizes/font_size = 32
 
-[node name="SampleUI" type="MarginContainer"]
+[node name="ScreenshotTest" type="Node"]
+script = ExtResource("1_u447u")
+test_name = "sample01"
+update_base_shot = false
+metadata/_custom_type_script = "uid://ku2fmx26hm16"
+
+[node name="SampleUI" type="MarginContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -16,39 +22,37 @@ theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
-script = ExtResource("1_w0tv4")
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+[node name="VBoxContainer2" type="VBoxContainer" parent="SampleUI"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer2"]
+[node name="Label" type="Label" parent="SampleUI/VBoxContainer2"]
 layout_mode = 2
 text = "List of items:"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="SampleUI/VBoxContainer2"]
 layout_mode = 2
 theme_override_constants/margin_left = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer2/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="SampleUI/VBoxContainer2/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer2/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="SampleUI/VBoxContainer2/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "• Item 1"
 
-[node name="Label2" type="Label" parent="VBoxContainer2/MarginContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="SampleUI/VBoxContainer2/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "• Item 2"
 
-[node name="Label3" type="Label" parent="VBoxContainer2/MarginContainer/VBoxContainer"]
+[node name="Label3" type="Label" parent="SampleUI/VBoxContainer2/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "• Item 3"
 
-[node name="Label4" type="Label" parent="VBoxContainer2/MarginContainer/VBoxContainer"]
+[node name="Label4" type="Label" parent="SampleUI/VBoxContainer2/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "• Item 4"
 
-[node name="Label5" type="Label" parent="VBoxContainer2/MarginContainer/VBoxContainer"]
-visible = false
+[node name="Label5" type="Label" parent="SampleUI/VBoxContainer2/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "• Item 5"

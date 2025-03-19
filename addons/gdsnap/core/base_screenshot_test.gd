@@ -1,8 +1,7 @@
 extends Node
 
-const TEST_NAME: String = "test"
-
-var update_base_shot: bool = false
+@export var test_name: String = "default_screenshot_test"
+@export var update_base_shot: bool = true
 
 func _ready() -> void:
 	await RenderingServer.frame_post_draw
@@ -11,16 +10,16 @@ func _ready() -> void:
 	if update_base_shot:
 		print("This run will generate the new base screenshots, so it won't generate results.")
 		var screenshot := take_screenshot()
-		update_base_screenshot(TEST_NAME, screenshot)
+		update_base_screenshot(test_name, screenshot)
 		_exit_gracefully()
 
 	var screenshot := take_screenshot()
-	var base_shot := load_base_screenshot(TEST_NAME)
+	var base_shot := load_base_screenshot(test_name)
 
 	var singlethread_comparer: ScreenshotComparer = ScreenshotComparer.new()
-	var result: float = singlethread_comparer.compare(base_shot, screenshot, "single_"+TEST_NAME)
+	var result: float = singlethread_comparer.compare(base_shot, screenshot, "single_"+test_name)
 	var multithread_comparer: ScreenshotComparer = MultithreadScreenshotComparer.new(8)
-	multithread_comparer.compare(base_shot, screenshot, "multi_"+TEST_NAME)
+	multithread_comparer.compare(base_shot, screenshot, "multi_"+test_name)
 	#print("result difference=%3.2f%%" % (result * 100))
 
 	_exit_gracefully()
