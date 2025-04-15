@@ -1,18 +1,20 @@
 @tool
 extends EditorPlugin
 
-var test_node_script: Script = preload("res://addons/gdsnap/core/base_screenshot_test.gd")
+var test_node_script: Script = preload("res://addons/gdsnap/view/base_screenshot_test.gd")
 var test_node_icon: Texture2D = preload("res://addons/gdsnap/assets/screenshot_test_node_icon.svg")
+
+var screenshoter_service: ScreenshoterService
+var screenshoter_comparison_service: ScreenshotComparisonService
 
 func _enter_tree() -> void:
 	_init_folders()
 	add_custom_type("ScreenshotTest", "Node", test_node_script, test_node_icon)
 
 func _exit_tree() -> void:
-	# Clean-up of the plugin goes here.
-	pass
+	remove_custom_type("ScreenshotTest")
 
-func _init_folders():
+func _init_folders() -> void:
 	if not DirAccess.dir_exists_absolute(ScreenshotConfig.SCREENSHOTS_FOLDER):
 		DirAccess.make_dir_absolute(ScreenshotConfig.SCREENSHOTS_FOLDER)
 	if not DirAccess.dir_exists_absolute(ScreenshotConfig.BASE_SCREENSHOTS_FOLDER):

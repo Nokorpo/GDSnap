@@ -1,13 +1,12 @@
 [gd_scene load_steps=3 format=3 uid="uid://cgpo81f7y7egh"]
 
-[ext_resource type="Script" uid="uid://ku2fmx26hm16" path="res://addons/gdsnap/core/base_screenshot_test.gd" id="1_u447u"]
+[ext_resource type="Script" uid="uid://ku2fmx26hm16" path="res://addons/gdsnap/view/base_screenshot_test.gd" id="1_u447u"]
 
 [sub_resource type="Theme" id="Theme_aefel"]
 Label/font_sizes/font_size = 32
 
 [node name="ScreenshotTest" type="Node"]
 script = ExtResource("1_u447u")
-test_name = "sample01"
 update_base_shot = false
 metadata/_custom_type_script = "uid://ku2fmx26hm16"
 

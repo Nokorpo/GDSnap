@@ -1,20 +1,19 @@
-class_name ScreenshotComparer
+class_name ScreenshotComparisonService
 extends RefCounted
 
 var FUCHSIA_PIXEL = PackedByteArray([255, 0, 255, 255])
 var WHITE_PIXEL = PackedByteArray([255, 255, 255, 255])
 
-func compare(original: Image, new_shot: Image, shot_name: String) -> float:
+func compare(original: Image, new_shot: Image, shot_name: String) -> ComparisonResult:
 	if not _can_run(original, new_shot):
-		return 0.0
+		return ComparisonResult.ERROR
 
 	var original_data := original.get_data()
 	var new_shot_data := new_shot.get_data()
-	var diff_result: DiffResult = _compare_img(original_data, new_shot_data)
-	_generate_diff_screenshot(original, diff_result, shot_name)
-
-	var total_pixels: int = original.get_data_size()/4.
-	return diff_result.different_pixels / float(total_pixels)
+	var diff := _compare_img(original_data, new_shot_data)
+	var diff_image := _generate_image(original, diff.data)
+	return ComparisonResult.new(diff.difference_by_percent, diff.different_pixels, diff_image)
+	# _generate_diff_screenshot(original, diff_result, shot_name)
 
 func _can_run(original: Image, new_shot: Image) -> bool:
 	if original == null:
@@ -25,8 +24,8 @@ func _can_run(original: Image, new_shot: Image) -> bool:
 		return false
 	return true
 
-func _compare_img(original: PackedByteArray, new_shot: PackedByteArray) -> DiffResult:
-	var diff_result := DiffResult.new(0 , [])
+func _compare_img(original: PackedByteArray, new_shot: PackedByteArray) -> DiffData:
+	var diff_result := DiffData.new(0., 0 , [])
 
 	for i in range(original.size()/4.):
 		var j: int = i * 4
@@ -38,15 +37,16 @@ func _compare_img(original: PackedByteArray, new_shot: PackedByteArray) -> DiffR
 
 		if diff >= 0.1:
 			diff_result.different_pixels += 1
-			diff_result.diff_image.append_array(FUCHSIA_PIXEL)
+			diff_result.data.append_array(FUCHSIA_PIXEL)
 		else:
-			diff_result.diff_image.append_array(WHITE_PIXEL)
+			diff_result.data.append_array(WHITE_PIXEL)
 
+	var total_pixels: int = original.size()/4.
+	diff_result.difference_by_percent = diff_result.different_pixels / float(total_pixels)
 	return diff_result
 
-func _generate_diff_screenshot(original: Image, diff_result: DiffResult, shot_name: String) -> void:
-	var diff_screenshot: Image = Image.create_from_data(
+func _generate_image(original: Image, bytes: PackedByteArray) -> Image:
+	return Image.create_from_data(
 			original.get_width(), original.get_height(),
-			false, original.get_format(), diff_result.diff_image
+			false, original.get_format(), bytes
 		)
-	diff_screenshot.save_png(ScreenshotConfig.DIFF_SCREENSHOTS_FOLDER + shot_name + ".png")
