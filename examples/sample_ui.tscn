@@ -50,7 +50,7 @@ text = "• Item 3"
 
 [node name="Label4" type="Label" parent="SampleUI/VBoxContainer2/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "• Item 4"
+text = " • Item 4"
 
 [node name="Label5" type="Label" parent="SampleUI/VBoxContainer2/MarginContainer/VBoxContainer"]
 layout_mode = 2
