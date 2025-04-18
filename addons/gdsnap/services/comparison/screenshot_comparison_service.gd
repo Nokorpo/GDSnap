@@ -1,9 +1,6 @@
 class_name ScreenshotComparisonService
 extends RefCounted
 
-var FUCHSIA_PIXEL = PackedByteArray([255, 0, 255, 255])
-var WHITE_PIXEL = PackedByteArray([255, 255, 255, 255])
-
 func compare(original: Image, new_shot: Image, shot_name: String) -> ComparisonResult:
 	if not _can_run(original, new_shot):
 		return ComparisonResult.ERROR
@@ -37,9 +34,13 @@ func _compare_img(original: PackedByteArray, new_shot: PackedByteArray) -> DiffD
 
 		if diff >= 0.1:
 			diff_result.different_pixels += 1
-			diff_result.data.append_array(FUCHSIA_PIXEL)
-		else:
-			diff_result.data.append_array(WHITE_PIXEL)
+
+		diff_result.data.append_array(PackedByteArray([
+			new_shot[j+0],
+			original[j+1],
+			original[j+2],
+			original[j+3]
+		]))
 
 	var total_pixels: int = original.size()/4.
 	diff_result.difference_by_percent = diff_result.different_pixels / float(total_pixels)
