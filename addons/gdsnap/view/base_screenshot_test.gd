@@ -1,4 +1,6 @@
 extends Node
+## This script shows an example of how to use the built-in ScreenshotTest node
+## to run a screenshot test on your game.
 
 @export var test_name: String = "default_screenshot_test"
 @export var update_base_shot: bool = true

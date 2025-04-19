@@ -1,0 +1,93 @@
+[gd_scene load_steps=11 format=3 uid="uid://df40q336pml6g"]
+
+[ext_resource type="Script" uid="uid://bhtfbltu88kvm" path="res://examples/sample_2d.gd" id="1_ejwmc"]
+[ext_resource type="Texture2D" uid="uid://cibrpcxjv1a26" path="res://icon.svg" id="3_pmwpj"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_fncm8"]
+bounce = 0.25
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fncm8"]
+size = Vector2(200, 20)
+
+[sub_resource type="GDScript" id="GDScript_ejwmc"]
+resource_name = "draw_shape"
+script/source = "extends CollisionShape2D
+
+func _draw() -> void:
+	var rect := shape as RectangleShape2D
+	draw_rect(rect.get_rect(), Color.WHITE)
+"
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1odw3"]
+bounce = 0.25
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1odw3"]
+radius = 40.0
+
+[sub_resource type="GDScript" id="GDScript_ck64c"]
+resource_name = "draw_shape"
+script/source = "extends CollisionShape2D
+
+func _draw() -> void:
+	var circle := shape as CircleShape2D
+	draw_circle(Vector2.ZERO, circle.radius, Color.WHITE)
+"
+
+[sub_resource type="Gradient" id="Gradient_pmwpj"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GDScript" id="GDScript_pmwpj"]
+resource_name = "emit_particles_on_collison"
+script/source = "extends CPUParticles2D
+
+@export var ball: RigidBody2D
+
+func _ready() -> void:
+	ball.body_entered.connect(_fire_particles.unbind(1))
+
+func _fire_particles() -> void:
+	emitting = true
+"
+
+[node name="ScreenshotTest" type="Node2D" node_paths=PackedStringArray("ball", "particles")]
+script = ExtResource("1_ejwmc")
+ball = NodePath("RigidBody2D")
+particles = NodePath("CPUParticles2D")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(576, 486)
+physics_material_override = SubResource("PhysicsMaterial_fncm8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("RectangleShape2D_fncm8")
+script = SubResource("GDScript_ejwmc")
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+position = Vector2(576, 324)
+physics_material_override = SubResource("PhysicsMaterial_1odw3")
+contact_monitor = true
+max_contacts_reported = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+shape = SubResource("CircleShape2D_1odw3")
+script = SubResource("GDScript_ck64c")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="." node_paths=PackedStringArray("ball")]
+position = Vector2(576, 486)
+emitting = false
+amount = 16
+texture = ExtResource("3_pmwpj")
+lifetime = 0.2
+one_shot = true
+explosiveness = 0.9
+direction = Vector2(0, -1)
+gravity = Vector2(0, 98)
+initial_velocity_min = 600.0
+initial_velocity_max = 600.0
+damping_min = 100.0
+damping_max = 100.0
+scale_amount_min = 0.2
+scale_amount_max = 0.2
+color_ramp = SubResource("Gradient_pmwpj")
+script = SubResource("GDScript_pmwpj")
+ball = NodePath("../RigidBody2D")
