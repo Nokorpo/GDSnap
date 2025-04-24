@@ -1,29 +1,44 @@
+class_name ScreenshotTest
 extends Node
 ## This script shows an example of how to use the built-in ScreenshotTest node
 ## to run a screenshot test on your game.
 
+signal test_begin(test: ScreenshotTest)
+signal test_end(test: ScreenshotTest, result: ComparisonResult)
+
 @export var test_name: String = "default_screenshot_test"
-@export var update_base_shot: bool = true
+@export var update_base_shot: bool = false
+
+var _timeout_timer: Timer
 
 func _ready() -> void:
+	test_begin.connect(GDSnap.on_test_begin)
+	test_end.connect(GDSnap.on_test_end)
+	test_begin.emit(self)
+	_timeout_timer = Timer.new()
+	_timeout_timer.one_shot = true
+	add_child(_timeout_timer)
+	_timeout_timer.timeout.connect(_exit.bind(ComparisonResult.TIMEOUT))
+	_timeout_timer.start(ScreenshotConfig.instance.timeout)
+
 	await RenderingServer.frame_post_draw
 
-	print("Starting screenshot test framework.")
+	print("GDSnap: %s: Starting test." % test_name)
 	if update_base_shot:
-		print("This run will generate the new base screenshots, so it won't generate results.")
+		print("GDSnap: %s: This run will generate the new base screenshots, so it won't generate results." % test_name)
 		var update_use_case := UpdateBaseShotUseCase.new(get_viewport())
 		update_use_case.run(test_name)
-		_exit_gracefully()
+		_exit(ComparisonResult.UPDATED)
+		return
 
 	var compare_use_case := CompareScreenshotUseCase.new(get_viewport())
 	var result := compare_use_case.run(test_name)
-	print("The screenshot is %f%% different" % result.difference_by_percent)
+	if result.difference_by_percent >= ScreenshotConfig.instance.failure_threshold: 
+		print("GDSnap: %s: Test failed. The screenshot is %3.2f%% different." % [test_name, (result.difference_by_percent * 100)])
+	else:
+		print("GDSnap: %s: Test successful." % test_name)
 
-	_exit_gracefully()
+	_exit(result)
 
-func _exit_gracefully() -> void:
-	await get_tree().create_timer(.2).timeout
-	# TODO create a singleton runner that records how many screenshots are taken
-	# and how many are different from their base screenshots (num errors)
-	print("Execution finished! Found no/X failing tests.")
-	get_tree().quit()
+func _exit(result: ComparisonResult) -> void:
+	test_end.emit(self, result)

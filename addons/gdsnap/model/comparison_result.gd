@@ -1,7 +1,12 @@
 class_name ComparisonResult
 extends RefCounted
 
-static var ERROR: ComparisonResult = ComparisonResult.new(-1, -1, null)
+## Result when the screenshot was updated
+static var UPDATED: ComparisonResult = ComparisonResult.new(-200, -200, null)
+## Result when there was an error while running the screenshot test, such as the base screenshot file not existing
+static var ERROR: ComparisonResult = ComparisonResult.new(-500, -500, null)
+## Result when the test runs for more than the timeout defined in ScreenshotConfig
+static var TIMEOUT: ComparisonResult = ComparisonResult.new(-408, -408, null)
 
 var difference_by_percent: float = 0
 var different_pixels: int = 0

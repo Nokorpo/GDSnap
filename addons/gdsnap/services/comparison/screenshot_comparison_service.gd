@@ -10,7 +10,6 @@ func compare(original: Image, new_shot: Image, shot_name: String) -> ComparisonR
 	var diff := _compare_img(original_data, new_shot_data)
 	var diff_image := _generate_image(original, diff.data)
 	return ComparisonResult.new(diff.difference_by_percent, diff.different_pixels, diff_image)
-	# _generate_diff_screenshot(original, diff_result, shot_name)
 
 func _can_run(original: Image, new_shot: Image) -> bool:
 	if original == null:

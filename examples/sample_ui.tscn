@@ -7,7 +7,7 @@ Label/font_sizes/font_size = 32
 
 [node name="ScreenshotTest" type="Node"]
 script = ExtResource("1_u447u")
-update_base_shot = false
+test_name = "sample_ui"
 metadata/_custom_type_script = "uid://ku2fmx26hm16"
 
 [node name="SampleUI" type="MarginContainer" parent="."]

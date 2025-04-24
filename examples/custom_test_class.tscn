@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3 uid="uid://6my5uexidvnc"]
+
+[ext_resource type="Script" uid="uid://cd7n4pc0w3e4s" path="res://examples/custom_test_class.gd" id="1_rqgle"]
+
+[sub_resource type="Theme" id="Theme_aefel"]
+Label/font_sizes/font_size = 32
+
+[node name="ScreenshotTest" type="Node"]
+script = ExtResource("1_rqgle")
+test_name = "custom_class"
+metadata/_custom_type_script = "uid://ku2fmx26hm16"
+
+[node name="SampleUI" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_aefel")
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer2" type="HBoxContainer" parent="SampleUI"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="SampleUI/VBoxContainer2"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="ColorRect2" type="ColorRect" parent="SampleUI/VBoxContainer2"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_vertical = 0

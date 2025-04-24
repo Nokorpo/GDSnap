@@ -15,8 +15,7 @@ const SCREENSHOT_NAME := "collision_test_01"
 @export var ball: RigidBody2D
 @export var particles: CPUParticles2D
 
-
-func _ready() -> void:
+func _ready() -> void:	
 	# GIVEN the ball contacts with the ground
 	ball.body_entered.connect(_take_screenshot.unbind(1))
 	# AND the particles have a static seed
@@ -33,7 +32,7 @@ func _take_screenshot() -> void:
 	var result := GDSnap.take_screenshot(SCREENSHOT_NAME, get_viewport())
 
 	#THEN it should look similar (under OK_THRESHOLD)
-	print("The screenshots are %f%% different" % result.difference_by_percent)
+	print("GDSnap: The screenshots are %f%% different" % (result.difference_by_percent * 100))
 	assert(result.difference_by_percent <= OK_THRESHOLD)
 
 	get_tree().quit()
